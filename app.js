@@ -24,7 +24,7 @@ UserClient.on('message', function(user, userID, channelID, message, event) {
     if(checkForMentions(message) && user !== BotClient.username) { // dont want to get mentioned from bot messages
 		BotClient.sendMessage({
 			to: UserClient.id,
-			message: `${user}: ${message}` // trash format sorry
+			message: `<#${channelID}> ${user}: ${message}` // trash format sorry
 		})
     }
 })
