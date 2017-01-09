@@ -63,7 +63,6 @@ BotClient.on('disconnect', function(errMsg, code) { // errMsg doesnt seem to wor
 })
 
 UserClient.on('disconnect', function(errMsg, code) {
-	console.log(`${errMsg} - ${code}`)
-	console.log('Will try to reconnect')
+	logOnDisconnect()
 	UserClient.connect()
 })
