@@ -17,10 +17,32 @@ const BotClient = new Discord.Client({
 
 let botOnline = null
 
-BotClient.on('ready', function(event) {
+function checkForMentions(message) {
+	let lowered = message.toLowerCase()
+	lowered = lowered.split(' ')
+	for(let i = 0; i < settings.mentionOn.length; i++) {
+		if(lowered.indexOf(settings.mentionOn[i]) > -1) {
+			return true
+		}
+	}
+	return false
+}
+
+function logOnReady() {
+	console.log('---')
 	console.log(`Logged in as ${UserClient.username} & ${BotClient.username}`)
 	console.log(`Will message ${UserClient.username} on: ${settings.mentionOn}`)
+}
+
+function logOnDisconnect(errMsg, code, BotClient) {
+	console.log('---')
+	console.log(new Date())
+	console.log(`error - ${code}`)
+}
+
+BotClient.on('ready', function(event) {
 	botOnline = true
+	logOnReady()
 })
 
 UserClient.on('message', function(user, userID, channelID, message, event) {
@@ -34,21 +56,9 @@ UserClient.on('message', function(user, userID, channelID, message, event) {
 	}
 })
 
-function checkForMentions(message) {
-	let lowered = message.toLowerCase()
-	lowered = lowered.split(' ')
-	for(let i = 0; i < settings.mentionOn.length; i++) {
-		if(lowered.indexOf(settings.mentionOn[i]) > -1) {
-			return true
-		}
-	}
-	return false
-}
-
-BotClient.on('disconnect', function(errMsg, code) {
+BotClient.on('disconnect', function(errMsg, code) { // errMsg doesnt seem to work
 	botOnline = false
-	console.log(`${errMsg} - ${code}`)
-	console.log('Will try to reconnect')
+	logOnDisconnect()
 	BotClient.connect()
 })
 
