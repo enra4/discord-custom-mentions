@@ -34,7 +34,7 @@ function logOnReady() {
 	console.log(`Will message ${UserClient.username} on: ${settings.mentionOn}`)
 }
 
-function logOnDisconnect(errMsg, code, BotClient) {
+function logOnDisconnect(errMsg, code) {
 	console.log('---')
 	console.log(new Date())
 	console.log(`error - ${code}`)
@@ -58,11 +58,11 @@ UserClient.on('message', function(user, userID, channelID, message, event) {
 
 BotClient.on('disconnect', function(errMsg, code) { // errMsg doesnt seem to work
 	botOnline = false
-	logOnDisconnect()
+	logOnDisconnect(errMsg, code)
 	BotClient.connect()
 })
 
 UserClient.on('disconnect', function(errMsg, code) {
-	logOnDisconnect()
+	logOnDisconnect(errMsg, code)
 	UserClient.connect()
 })
