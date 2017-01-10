@@ -1,9 +1,5 @@
 const Discord = require('discord.io')
-const settings = {
-	userToken: '', // insert your user token here
-	botToken: '', // insert your bot token here
-	mentionOn: [] // add words you want to get mentioned on
-}
+const settings = require('./settings.json') // go to settings.json to change settings...
 
 const UserClient = new Discord.Client({
 	autorun: true,
