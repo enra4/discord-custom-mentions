@@ -8,8 +8,12 @@ const UserClient = new Discord.Client({
 })
 
 const BotClient = new Discord.Client({
-	autorun: true,
+	autorun: false,
 	token: settings.botToken
+})
+
+UserClient.on('ready', function(event) {
+	BotClient.connect()
 })
 
 BotClient.on('ready', function(event) {
