@@ -1,6 +1,5 @@
 const Discord = require('discord.io')
 const Message = require('./lib/Message.js')
-const ClientInfo = require('./lib/ClientInfo.js')
 const settings = require('./settings.json') // go to settings.json to change settings...
 
 const UserClient = new Discord.Client({
