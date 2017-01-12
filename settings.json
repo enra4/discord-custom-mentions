@@ -1,5 +1,6 @@
 {
   "userToken": "",
   "botToken": "",
-  "mentionOn": []
+  "mentionOn": [],
+  "ignoreChannels": []
 }
