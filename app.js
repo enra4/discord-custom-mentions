@@ -14,7 +14,6 @@ const BotClient = new Discord.Client({
 })
 
 BotClient.on('ready', function(event) {
-	ClientInfo.botOnline = true
 	console.log('---')
 	console.log(`Logged in as ${UserClient.username} & ${BotClient.username}`)
 	console.log(`Will message ${UserClient.username} on: ${settings.mentionOn}`)
@@ -22,7 +21,7 @@ BotClient.on('ready', function(event) {
 
 UserClient.on('message', function(user, userID, channelID, message, event) {
 	if(Message.checkForMentions(userID, channelID, message, BotClient.id, UserClient.channels)) {
-		if(ClientInfo.botOnline) { // so it doesnt try to sendMessage if BotClient isnt connected
+		if(BotClient.connected) { // so it doesnt try to sendMessage if BotClient isnt connected
 			BotClient.sendMessage({
 				to: UserClient.id,
 				message: `<#${channelID}> ${user}: ${message}` // trash format sorry
@@ -32,7 +31,6 @@ UserClient.on('message', function(user, userID, channelID, message, event) {
 })
 
 BotClient.on('disconnect', function(errMsg, code) { // errMsg doesnt seem to work
-	ClientInfo.botOnline = false
 	console.log('---')
 	console.log(new Date())
 	console.log(`error - ${code}`)
