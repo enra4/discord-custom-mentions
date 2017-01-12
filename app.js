@@ -24,10 +24,10 @@ BotClient.on('ready', function(event) {
 
 UserClient.on('message', function(user, userID, channelID, message, event) {
 	if(Message.checkForMentions(userID, channelID, message, BotClient.id, UserClient.channels)) {
-		if(BotClient.connected) { // so it doesnt try to sendMessage if BotClient isnt connected
+		if(BotClient.connected) {
 			BotClient.sendMessage({
 				to: UserClient.id,
-				message: `<#${channelID}> ${user}: ${message}` // trash format sorry
+				message: `<#${channelID}> ${user}: ${message}`
 			})
 		}
 	}
