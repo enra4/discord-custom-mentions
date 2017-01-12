@@ -1,4 +1,6 @@
 const Discord = require('discord.io')
+const Message = require('./lib/Message.js')
+const ClientInfo = require('./lib/ClientInfo.js')
 const settings = require('./settings.json') // go to settings.json to change settings...
 
 const UserClient = new Discord.Client({
@@ -11,39 +13,16 @@ const BotClient = new Discord.Client({
 	token: settings.botToken
 })
 
-let botOnline = null
-
-function checkForMentions(message) {
-	let lowered = message.toLowerCase()
-	lowered = lowered.split(' ')
-	for(let i = 0; i < settings.mentionOn.length; i++) {
-		if(lowered.indexOf(settings.mentionOn[i]) > -1) {
-			return true
-		}
-	}
-	return false
-}
-
-function logOnReady() {
+BotClient.on('ready', function(event) {
+	ClientInfo.botOnline = true
 	console.log('---')
 	console.log(`Logged in as ${UserClient.username} & ${BotClient.username}`)
 	console.log(`Will message ${UserClient.username} on: ${settings.mentionOn}`)
-}
-
-function logOnDisconnect(errMsg, code) {
-	console.log('---')
-	console.log(new Date())
-	console.log(`error - ${code}`)
-}
-
-BotClient.on('ready', function(event) {
-	botOnline = true
-	logOnReady()
 })
 
 UserClient.on('message', function(user, userID, channelID, message, event) {
-	if(checkForMentions(message) && user !== BotClient.username) { // dont want to get mentioned from bot messages
-		if(botOnline) { // so it doesnt try to sendMessage if BotClient isnt connected
+	if(Message.checkForMentions(userID, channelID, message, BotClient.id, UserClient.channels)) {
+		if(ClientInfo.botOnline) { // so it doesnt try to sendMessage if BotClient isnt connected
 			BotClient.sendMessage({
 				to: UserClient.id,
 				message: `<#${channelID}> ${user}: ${message}` // trash format sorry
@@ -53,12 +32,16 @@ UserClient.on('message', function(user, userID, channelID, message, event) {
 })
 
 BotClient.on('disconnect', function(errMsg, code) { // errMsg doesnt seem to work
-	botOnline = false
-	logOnDisconnect(errMsg, code)
+	ClientInfo.botOnline = false
+	console.log('---')
+	console.log(new Date())
+	console.log(`error - ${code}`)
 	BotClient.connect()
 })
 
 UserClient.on('disconnect', function(errMsg, code) {
-	logOnDisconnect(errMsg, code)
+	console.log('---')
+	console.log(new Date())
+	console.log(`error - ${code}`)
 	UserClient.connect()
 })
