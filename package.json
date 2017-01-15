@@ -1,6 +1,5 @@
 {
-  "name": "discord-mention-on-x",
-  "version": "1.0.0",
+  "name": "discord-mention-on-word",
   "author": "enra4",
   "dependencies": {
     "discord.io": "^2.4.0"
