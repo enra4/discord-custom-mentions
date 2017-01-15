@@ -23,7 +23,7 @@ BotClient.on('ready', function(event) {
 })
 
 UserClient.on('message', function(user, userID, channelID, message, event) {
-	if(Message.checkForMentions(userID, channelID, message, BotClient.id, UserClient.channels)) {
+	if(Message.checkForMentions(userID, channelID, message, UserClient.id, BotClient.id, UserClient.channels)) {
 		if(BotClient.connected) {
 			BotClient.sendMessage({
 				to: UserClient.id,
@@ -33,16 +33,16 @@ UserClient.on('message', function(user, userID, channelID, message, event) {
 	}
 })
 
-BotClient.on('disconnect', function(errMsg, code) { // errMsg doesnt seem to work
-	console.log('---')
-	console.log(new Date())
-	console.log(`error - ${code}`)
-	BotClient.connect()
-})
-
-UserClient.on('disconnect', function(errMsg, code) {
+UserClient.on('disconnect', function(errMsg, code) { // errMsg doesnt seem to work
 	console.log('---')
 	console.log(new Date())
 	console.log(`error - ${code}`)
 	UserClient.connect()
+})
+
+BotClient.on('disconnect', function(errMsg, code) {
+	console.log('---')
+	console.log(new Date())
+	console.log(`error - ${code}`)
+	BotClient.connect()
 })
