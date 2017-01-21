@@ -2,6 +2,7 @@
   "userToken": "",
   "botToken": "",
   "mentionOn": [],
+  "individualOnly": true,
   "ignoreChannelIDs": [],
   "ignoreUserIDs": []
 }
